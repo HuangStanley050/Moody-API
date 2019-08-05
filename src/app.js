@@ -7,6 +7,7 @@ import serviceAccount from "./pwagram-bd625-firebase-adminsdk-ew3ye-863e79e816.j
 
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
+import authRouter from "./routes/auth";
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use("/", indexRouter);
+app.use("/api/auth", authRouter);
 app.use("/users", usersRouter);
 
 export default app;
