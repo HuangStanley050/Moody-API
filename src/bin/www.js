@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-var app = require("../app");
+import app from "../app.js";
 var debug = require("debug")("moody-api:server");
-var http = require("http");
+import http from "http";
 
 /**
  * Get port from environment and store in Express.
