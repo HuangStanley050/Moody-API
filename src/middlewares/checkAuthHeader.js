@@ -6,6 +6,7 @@ export const checkHeader = (req, res, next) => {
     return next(error);
   }
   token = req.headers.authorization.split(" ")[1];
-  console.log(token);
+  //console.log(token);
+  req.token = token;
   next();
 };

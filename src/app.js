@@ -12,8 +12,10 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 const auth = admin.auth();
+const db = admin.firestore();
 const app = express();
 app.set("auth", auth);
+app.set("db", db);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
