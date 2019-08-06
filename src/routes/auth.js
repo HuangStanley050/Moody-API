@@ -21,11 +21,13 @@ router
     try {
       result = await axios.post(end_point, data);
     } catch (e) {
-      console.log(e);
+      const error = new Error("Login failed");
+      //console.log(e);
+      return next(error);
     }
 
-    console.log(result.data);
-    res.json({ message: "Auth login route" });
+    //console.log(result.data.idToken);
+    res.json({ message: "Login Successful", token: result.data.idToken });
   });
 
 export default router;
