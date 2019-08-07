@@ -4,6 +4,6 @@ const router = express.Router();
 
 router
   .get("/", ResourceController.fetchResource)
-  .post("/storeMood", ResourceController.addMood);
+  .post("/storeMood/:timestamp", ResourceController.addMood);
 
 export default router;
