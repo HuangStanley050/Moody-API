@@ -23,5 +23,11 @@ app.use(cors());
 
 app.use("/api/auth", authRouter);
 app.use("/api/resource", checkHeader, resourceRouter);
+app.use((error, req, res, next) => {
+  const status = error.statusCode || 500;
+  const message = error.message;
+  //const data = error.data;
+  res.status(status).json({ message });
+});
 
 export default app;
