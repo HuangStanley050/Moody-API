@@ -18,5 +18,28 @@ export default {
 
     res.json({ message: "Token verified" });
   },
-  addMood: async (req, res, next) => {}
+  addMood: async (req, res, next) => {
+    const db = req.app.get("db");
+    const admin = req.app.get("auth");
+    const token = req.token;
+    let check_result;
+
+    check_result = await checkToken(admin, token);
+
+    if (!check_result) {
+      const error = new Error("Token Error");
+      error.statusCode = 401;
+      return next(error);
+    }
+
+    const data = {
+      userId: "123456",
+      date: "testad",
+      gifyUrl: "www.textdd.com",
+      mood: "wicked"
+    };
+    let save_result = await db.collection("moods").add(data);
+
+    res.json({ message: "route to store mood to database" });
+  }
 };
