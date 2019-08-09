@@ -7,6 +7,11 @@ const old_token =
 export default {
   fetchResource: async (req, res, next) => {
     const admin = req.app.get("auth");
+    const db = req.app.get("db");
+    let moodRef = db.collection("moods");
+    let queryResult;
+
+    const lookUpDate = req.query.day;
     const token = req.token;
     let check_result;
 
@@ -16,6 +21,19 @@ export default {
       const error = new Error("Token Error");
       error.statusCode = 401;
       return next(error);
+    }
+    console.log(lookUpDate);
+
+    try {
+      queryResult = await moodRef.where("made", "==", lookUpDate).get();
+    } catch (err) {
+      console.log(err);
+    }
+    console.log("query object: ", queryResult);
+    console.log("query is it empty result:===> ", queryResult.empty);
+
+    for (let doc of queryResult.docs) {
+      console.log(doc.data());
     }
 
     res.json({ message: "Token verified" });
@@ -38,7 +56,7 @@ export default {
       error.statusCode = 401;
       return next(error);
     }
-    const dayMade = formatTime();
+    const made = formatTime();
 
     let client = GphApiClient(process.env.GIPHY_KEY);
     let giphyResult;
@@ -55,9 +73,10 @@ export default {
 
     firebaseData = {
       uid: "128a",
-      dayMade,
+      made,
       gifUrl: giphyResult.data.url,
       mood,
+      timestamp,
       description
     };
 
