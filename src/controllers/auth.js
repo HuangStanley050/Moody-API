@@ -21,6 +21,10 @@ export default {
       return next(error);
     }
 
-    res.json({ message: "Login Successful", token: result.data.idToken });
+    res.json({
+      message: "Login Successful",
+      token: result.data.idToken,
+      userInfo: { email: result.data.email, uid: result.data.localId }
+    });
   }
 };
