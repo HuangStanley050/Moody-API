@@ -24,7 +24,6 @@ export default {
       error.statusCode = 401;
       return next(error);
     }
-    //console.log(lookUpDate);
 
     try {
       queryResult = await moodRef.where("made", "==", lookUpDate).get();
@@ -40,8 +39,6 @@ export default {
     } catch (err) {
       console.log(err);
     }
-    // console.log("query object: ", queryResult);
-    // console.log("query is it empty result:===> ", queryResult.empty);
 
     res.json({
       message: "Fetch resurce successful",
