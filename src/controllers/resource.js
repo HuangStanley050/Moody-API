@@ -10,10 +10,12 @@ export default {
     const db = req.app.get("db");
     let moodRef = db.collection("moods");
     let queryResult;
+    let returnResult = [];
 
     const lookUpDate = req.query.day;
     const token = req.token;
     let check_result;
+    let check_message;
 
     check_result = await checkToken(admin, token);
 
@@ -22,21 +24,29 @@ export default {
       error.statusCode = 401;
       return next(error);
     }
-    console.log(lookUpDate);
+    //console.log(lookUpDate);
 
     try {
       queryResult = await moodRef.where("made", "==", lookUpDate).get();
+      if (queryResult.empty) {
+        check_message = "no result";
+      } else {
+        check_message = "result found";
+        for (let doc of queryResult.docs) {
+          //console.log(doc.data());
+          returnResult.push(doc.data());
+        }
+      }
     } catch (err) {
       console.log(err);
     }
-    console.log("query object: ", queryResult);
-    console.log("query is it empty result:===> ", queryResult.empty);
+    // console.log("query object: ", queryResult);
+    // console.log("query is it empty result:===> ", queryResult.empty);
 
-    for (let doc of queryResult.docs) {
-      console.log(doc.data());
-    }
-
-    res.json({ message: "Token verified" });
+    res.json({
+      message: "Fetch resurce successful",
+      data: { message: check_message, result: returnResult }
+    });
   },
   addMood: async (req, res, next) => {
     const db = req.app.get("db");
