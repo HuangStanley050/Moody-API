@@ -50,6 +50,7 @@ export default {
     const admin = req.app.get("auth");
     const token = req.token;
     const timestamp = req.params.timestamp;
+    const uid = req.body.uid;
     const mood = req.body.mood;
     const description = req.body.description;
     let firebaseData;
@@ -79,7 +80,7 @@ export default {
     }
 
     firebaseData = {
-      uid: "128a",
+      uid,
       made,
       gifUrl: giphyResult.data.url,
       mood,
@@ -89,6 +90,6 @@ export default {
 
     await db.collection("moods").add(firebaseData);
 
-    res.json({ message: "route to store mood to database" });
+    res.json({ message: "Mood added to database" });
   }
 };
